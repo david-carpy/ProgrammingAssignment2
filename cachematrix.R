@@ -1,15 +1,33 @@
-## Put comments here that give an overall description of what your
-## functions do
+## The functions create and cache the inverse matrix, as well as solving
+## them
 
-## Write a short comment describing this function
+## Using the vectors example, a cache matrix is created using the solve
+## function
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        m <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        get <- function() x
+        setsolve <- function(solve) m <<- solve
+        getsolve <- function() m
+        list(set = set, get = get,
+             setsolve = setsolve,
+             getsolve = getsolve)
 }
 
-
-## Write a short comment describing this function
+## Using the cache mean example, the solve function is used in the matrix
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        m <- x$getsolve()
+        if (!is.null(m)) {
+                message("getting cached data")
+                return(m)
+        }
+        data <- x$get()
+        m <- solve(data, ...)
+        x$setsolve(m)
+        m
 }
